@@ -1,0 +1,21 @@
+version: '2.0'
+services:
+  techofmany:
+    build:
+      context: .
+    image: techofmany:latest
+    ports:
+      - 3001:3001
+  mongo:
+    build:
+      context: ./mysql
+    image: techofmany-db:latest
+    environment:
+      MONGO_INITDB_DATABASE: techofmany
+    ports:
+      - 27017:27017
+    volumes:
+      - database:/data/db
+
+volumes:
+  database:

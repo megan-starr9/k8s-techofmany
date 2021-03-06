@@ -1,0 +1,51 @@
+name: Continuous Integration and CI
+
+on:
+  release:
+    types: [published]
+
+env:
+  DOCKER_IMG: techofmany:latest
+  GITHUB_IMG: docker.pkg.github.com/megan-starr9/k8s-techofmany/techofmany
+  DEPLOYMENT_NAME: techofmany
+  CLUSTER_NAME: megstarr-k8s-cluster
+
+jobs:
+
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get the version
+        id: get_version
+        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      - name: Checkout packages
+        uses: actions/checkout@v2
+      - name: Log in to GitHub Packages
+        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
+      - name: Pull images
+        run: |
+          docker pull ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }} || true
+      - name: Build images
+        run: |
+          docker-compose build --no-cache
+      - name: Label images
+        run: |
+          docker tag ${{ env.DOCKER_IMG }} ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}
+      - name: Push images
+        run: |
+          docker push ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}
+
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+
+      - name: Update configurations
+        run: |
+          sed -i 's|<IMAGE>|${{ env.DOCKER_IMG }}:${{ steps.get_version.outputs.VERSION }}|' $GITHUB_WORKSPACE/deploy/${{ env.DEPLOYMENT_NAME }}.yml
+          doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
+          kubectl apply -f $GITHUB_WORKSPACE/deploy/
+
+      - name: Verify
+        run: |
+          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} --timeout=90s

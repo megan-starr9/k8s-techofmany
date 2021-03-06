@@ -1,0 +1,16 @@
+version: '2.0'
+services:
+  nginx:
+    build:
+      context: ./nginx
+    image: nginx:latest
+    restart: on-failure
+    ports:
+      - 80:80
+
+  mongodb:
+    volumes:
+      - ./mongodb/data:/data/db
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: rootpassword

@@ -1,3 +1,7 @@
+# My Ignores
+/mongodb/data/
+docker-compose.override.yml
+
 # Logs
 logs
 *.log
