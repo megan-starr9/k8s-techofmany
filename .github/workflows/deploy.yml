@@ -42,7 +42,7 @@ jobs:
 
       - name: Update configurations
         run: |
-          sed -i 's|<IMAGE>|${{ env.DOCKER_IMG }}:${{ steps.get_version.outputs.VERSION }}|' $GITHUB_WORKSPACE/deploy/${{ env.DEPLOYMENT_NAME }}.yml
+          sed -i 's|<IMAGE>|${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}|' $GITHUB_WORKSPACE/deploy/${{ env.DEPLOYMENT_NAME }}.yml
           doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
           kubectl apply -f $GITHUB_WORKSPACE/deploy/
 
