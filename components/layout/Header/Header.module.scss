@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  height: 100px;
+  width: 100%;
+  max-width: 1500px;
+  align-items: flex-end;
+  justify-content: flex-end;
+
+  h1 {
+    font-size: 30px;
+    margin: 0 30px 10px 0;
+  }
+}

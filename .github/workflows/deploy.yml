@@ -5,47 +5,41 @@ on:
     types: [published]
 
 env:
-  DOCKER_IMG: techofmany:latest
-  GITHUB_IMG: docker.pkg.github.com/megan-starr9/k8s-techofmany/techofmany
-  DEPLOYMENT_NAME: techofmany
-  CLUSTER_NAME: megstarr-k8s-cluster
+  CONTAINER_REGISTRY: ghcr.io/megan-starr9
+  K_CLUSTER: megstarr-k8s-cluster
 
 jobs:
-
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Get the version
-        id: get_version
-        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
-      - name: Checkout packages
-        uses: actions/checkout@v2
-      - name: Log in to GitHub Packages
-        run: echo ${{ secrets.GITHUB_TOKEN }} | docker login https://docker.pkg.github.com -u ${GITHUB_ACTOR} --password-stdin
-      - name: Pull images
-        run: |
-          docker pull ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }} || true
-      - name: Build images
-        run: |
-          docker-compose build --no-cache
-      - name: Label images
-        run: |
-          docker tag ${{ env.DOCKER_IMG }} ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}
-      - name: Push images
-        run: |
-          docker push ${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}
-
-      - name: Install doctl
-        uses: digitalocean/action-doctl@v2
-        with:
-          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-
-      - name: Update configurations
-        run: |
-          sed -i 's|<IMAGE>|${{ env.GITHUB_IMG }}:${{ steps.get_version.outputs.VERSION }}|' $GITHUB_WORKSPACE/deploy/${{ env.DEPLOYMENT_NAME }}.yml
-          doctl kubernetes cluster kubeconfig save ${{ env.CLUSTER_NAME }}
-          kubectl apply -f $GITHUB_WORKSPACE/deploy/
-
-      - name: Verify
-        run: |
-          kubectl rollout status deployment/${{ env.DEPLOYMENT_NAME }} --timeout=90s
+    - name: Set the version in environment
+      run: |
+        echo "VERSION=$(echo ${GITHUB_REF/refs\/tags\//})" >> $GITHUB_ENV
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+    - name: Build image
+      run: |
+        docker-compose build --no-cache k8s-techofmany
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.PACKAGE_REG_TOKEN }}
+    - name: Push image
+      run: |
+        docker image push ${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}
+    - name: Update k8s configuration
+      run: |
+        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/deploy.yml
+    - name: Install doctl
+      uses: digitalocean/action-doctl@v2
+      with:
+        token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+    - name: Deploy cluster
+      run: |
+        doctl kubernetes cluster kubeconfig save ${{ env.K_CLUSTER }}
+        kubectl apply -f $GITHUB_WORKSPACE/deploy.yml
+        kubectl apply -f $GITHUB_WORKSPACE/ingress.yml
+    - name: Verify
+      run: kubectl rollout status deployment/k8s-techofmany --timeout=90s

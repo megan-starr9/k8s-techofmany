@@ -3,19 +3,6 @@ services:
   techofmany:
     build:
       context: .
-    image: techofmany:latest
+    image: ${CONTAINER_REGISTRY}/k8s-techofmany:${VERSION}
     ports:
       - 3001:3001
-  mongodb:
-    build:
-      context: ./mongodb
-    image: techofmany-db:latest
-    environment:
-      MONGO_INITDB_DATABASE: techofmany
-    ports:
-      - 27017:27017
-    volumes:
-      - database:/data/db
-
-volumes:
-  database:

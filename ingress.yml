@@ -5,6 +5,7 @@ metadata:
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
+    nginx.ingress.kubernetes.io/default-backend: "custom-nginx"
 spec:
   rules:
   - host: techofmany.com

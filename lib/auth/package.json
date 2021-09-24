@@ -1,0 +1,23 @@
+{
+  "name": "@techofmany/auth",
+  "version": "1.0.0",
+  "description": "Coming",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/iron": "^6.0.0",
+    "cookie": "^0.4.1",
+    "passport": "^0.4.1",
+    "passport-local": "^1.0.0"
+  },
+  "peerDependencies": {
+    "next-connect": "^0.10.0",
+    "react": "^17.0.0",
+    "react-hook-form": "^7.15.0",
+    "recoil": "^0.4.0"
+  }
+}
