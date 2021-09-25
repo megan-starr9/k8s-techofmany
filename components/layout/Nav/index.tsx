@@ -1,12 +1,12 @@
 import React from 'react';
 import Link from 'next/link'
-import withUser from '@techofmany/auth/hooks/withUser';
+import withSessionUser from '@techofmany/auth/hooks/withSessionUser';
 import LogoutLink from '@techofmany/auth/components/LogoutLink';
 
 import styles from './Nav.module.scss';
 
 const Nav: React.FC = () => {
-  const user = withUser();
+  const currentUser = withSessionUser();
 
   return (
     <nav className={styles.navbar}>
@@ -17,9 +17,11 @@ const Nav: React.FC = () => {
           <li className={styles.link}><Link href="/articles">Articles</Link></li>
         </ul>
         <ul>
-          {user ? (
+          {currentUser ? (
             <>
-              <li className={styles.text}>Welcome back {user.username}</li>
+              <li className={styles.link}>
+                <Link href={`/user/profile/${currentUser.id}`}>{currentUser.username}</Link>
+              </li>
               <li className={styles.link}><LogoutLink /></li>
             </>
           ) : (

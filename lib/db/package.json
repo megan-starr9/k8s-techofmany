@@ -9,6 +9,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "mongodb": "^4.1.2"
+    "aws4": "^1.11.0",
+    "bson-ext": "^4.0.1",
+    "kerberos": "^1.1.7",
+    "mongodb": "^4.1.2",
+    "mongodb-client-encryption": "^1.2.7",
+    "snappy": "^7.0.3"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
+    "@types/mongodb": "^3.6.18"
   }
 }

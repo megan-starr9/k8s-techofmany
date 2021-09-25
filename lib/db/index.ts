@@ -1,6 +1,3 @@
-import type {
-   ObjectId,
- } from 'mongodb';
 import {
   connect as connectDB,
   disconnect,
@@ -8,9 +5,10 @@ import {
   update,
   remove,
   find,
+  findById,
   findPage,
   addIndex,
-} from './mongodb';
+} from './lib/mongodb';
 
 export async function connect(): Promise<void> {
   await connectDB();
@@ -27,12 +25,8 @@ export {
   update,
   remove,
   find,
+  findById,
   findPage,
   addIndex,
+  disconnect,
 };
-
-export type Result<T> = T & {
-  _id: ObjectId,
-};
-
-export type Identifier = ObjectId;

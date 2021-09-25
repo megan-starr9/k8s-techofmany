@@ -6,7 +6,8 @@ import PATHS from './paths';
 const handler = nextConnect()
 
 handler
-  .get(`${PATHS.GET_USER}/:id`, getUser)
-  .get(PATHS.GET_USER_LIST, getUserList);
+  .get(PATHS.GET_USER_LIST, getUserList)
+  .get(`${PATHS.GET_USER}/:uid`, getUser);
+
 
 export default handler;

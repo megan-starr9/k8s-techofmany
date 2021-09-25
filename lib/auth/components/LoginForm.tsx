@@ -1,31 +1,41 @@
-import React from 'react';
-import {
-  useSetRecoilState
-} from 'recoil';
+import React, {
+  useEffect,
+} from 'react';
 import { useForm } from 'react-hook-form';
-import { loginUser } from '../service';
+import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/router';
+import { emailAuthentication } from '../service';
 import currentUserState from '../state/currentUser';
-
-type LoginData = {
-  username: string;
-  password: string;
-};
+import type { UserLogin } from '../types/Forms';
 
 type LoginFormProps = {
-  onSuccess: () => void;
+  onSuccess?: () => void;
+  onFailure?: (e: Error) => void;
+  successRedirect?: string;
 };
 
-export default function LoginForm({
+function LoginForm({
   onSuccess,
+  onFailure,
+  successRedirect,
 }: LoginFormProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<LoginData>();
-  const setCurrentUser = useSetRecoilState(currentUserState);
+  const router = useRouter();
+  const { register, handleSubmit, formState: { errors } } = useForm<UserLogin>();
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
 
-  const onSubmit = async data => {
-    await loginUser(data);
-    setCurrentUser(data);
-    onSuccess && onSuccess();
+  const onSubmit = async (data: UserLogin) => {
+    try {
+      const user = await emailAuthentication(data);
+      setCurrentUser(user);
+      onSuccess && onSuccess();
+    } catch(e) {
+      onFailure(e);
+    }
   };
+
+  useEffect(() => {
+    currentUser && router.push(successRedirect);
+  }, [currentUser]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -41,3 +51,10 @@ export default function LoginForm({
     </form>
   );
 }
+
+LoginForm.defaultProps = {
+  onFailure: (e) => console.log(e),
+  successRedirect: '/',
+};
+
+export default LoginForm;

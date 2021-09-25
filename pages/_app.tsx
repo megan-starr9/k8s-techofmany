@@ -1,8 +1,8 @@
 import Head from 'next/head';
+import { RecoilRoot } from 'recoil';
 import Header from '../components/layout/Header';
 import Nav from '../components/layout/Nav';
 import Content from '../components/layout/Content';
-import { RecoilRoot } from 'recoil';
 
 function MyApp({ Component, pageProps }) {
   return (

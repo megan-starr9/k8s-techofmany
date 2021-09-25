@@ -1,9 +1,9 @@
+import { NextApiHandler } from 'next';
+import { searchUsers } from '../store';
 
-export default function getUserList(req, res) {
-  res.status(200).json({ success: true, users: [
-    { username: 'User A' },
-    { username: 'User B' },
-    { username: 'User C' },
-  ],
-  })
-}
+const getUserList: NextApiHandler = async (req, res) => {
+  const users = await searchUsers({}, req.query.page, req.query.limit);
+  res.status(200).json({ success: true, users });
+};
+
+export default getUserList;

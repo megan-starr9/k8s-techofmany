@@ -15,9 +15,15 @@
     "passport-local": "^1.0.0"
   },
   "peerDependencies": {
+    "@techofmany/user": "^1.0.0",
     "next-connect": "^0.10.0",
     "react": "^17.0.0",
     "react-hook-form": "^7.15.0",
     "recoil": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/cookie": "^0.4.1",
+    "@types/passport": "^1.0.7",
+    "@types/passport-local": "^1.0.34"
   }
 }

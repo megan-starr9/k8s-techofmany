@@ -1,28 +1,24 @@
 import axios from 'axios';
 import PATHS from './api/paths';
+import type {
+  UserRegister,
+  UserLogin,
+} from './types/Forms';
 
 /**
  * Get current session user
  */
-export async function getCurrentUser() {
+export async function getSessionUser() {
   const response = await axios.get(PATHS.GET_SESSION_USER);
   return response.data ? response.data.user : null;
 }
 
 /**
- * Register a user
+ * Authenticate a user via email
  */
-export async function registerUser(userData) {
-  const response = await axios.post(PATHS.REGISTER, userData);
-  return response.data ? response.data.newUser : null;
-}
-
-/**
- * Log a user in
- */
-export async function loginUser(userData) {
-  const response = await axios.post(PATHS.LOGIN, userData);
-  return response.data.user;
+export async function emailAuthentication(userData: UserRegister | UserLogin) {
+  const response = await axios.post(PATHS.EMAIL, userData);
+  return response.data ? response.data.user : null;
 }
 
 /**

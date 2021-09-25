@@ -1,23 +1,27 @@
 import React from 'react';
-import {
-  useSetRecoilState
-} from 'recoil';
-import { logoutUser } from '../service';
+import { useSetRecoilState } from 'recoil';
 import currentUserState from '../state/currentUser';
+import { logoutUser } from '../service';
 
 type LogoutLinkProps = {
-  onLogout: () => void;
+  onSuccess?: () => void;
+  onFailure?: (e: Error) => void;
 };
 
 export default function LogoutLink({
-  onLogout,
+  onSuccess,
+  onFailure,
 }: LogoutLinkProps) {
   const setCurrentUser = useSetRecoilState(currentUserState);
 
   const handleLogout = async () => {
-    await logoutUser();
-    setCurrentUser(null);
-    onLogout && onLogout();
+    try {
+      await logoutUser();
+      setCurrentUser(null);
+      onSuccess && onSuccess();
+    } catch(e) {
+      onFailure(e);
+    }
   };
 
   return (

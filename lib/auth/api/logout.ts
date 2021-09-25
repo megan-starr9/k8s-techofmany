@@ -1,5 +1,8 @@
+import type { AuthApiMiddleware } from '../types/Request';
 
-export default function logout(req, res) {
+const logout: AuthApiMiddleware = (req, res) => {
   req.logOut();
   res.status(204).end();
-}
+};
+
+export default logout;

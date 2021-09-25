@@ -1,7 +1,10 @@
 import nextConnect from 'next-connect'
-import { connect } from '@techofmany/db';
+import { NextApiRequest, NextApiResponse } from "next";
+import {
+  connect,
+} from '@techofmany/db';
 
-const handler = nextConnect()
+const handler = nextConnect<NextApiRequest, NextApiResponse>()
   .use(async (req, res, next) => {
     try {
       await connect();

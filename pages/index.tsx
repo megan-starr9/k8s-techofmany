@@ -10,7 +10,6 @@ export default function Home() {
       <h1>Stuff Here!</h1>
 
       <p>Coming soon....</p>
-
     </div>
   )
 }

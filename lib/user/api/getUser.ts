@@ -1,4 +1,10 @@
+import { NextApiHandler } from 'next';
+import { findUser } from '../store';
 
-export default function getUser(req, res) {
-  res.status(200).json({ success: true, user: { username: 'Another Test' } })
-}
+const getUser: NextApiHandler = async (req, res) => {
+  const { slug } = req.query;
+  const user = await findUser(Array.isArray(slug) ? slug.pop() : slug);
+  res.status(200).json({ success: true, user });
+};
+
+export default getUser;

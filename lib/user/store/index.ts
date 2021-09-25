@@ -3,7 +3,6 @@ import {
   findUser,
   getUserCredentials,
   searchUsers,
-  UserResult as UserResultDef,
 } from './user';
 
 export {
@@ -12,5 +11,3 @@ export {
   getUserCredentials,
   searchUsers,
 };
-
-export type UserResult = UserResultDef;

@@ -1,27 +1,42 @@
-import React from 'react';
+import React, {
+  useEffect,
+} from 'react';
 import { useForm } from 'react-hook-form';
-import { registerUser } from '../service';
-
-type RegisterData = {
-  username: string;
-  email: string;
-  password: string;
-  passwordConfirm: string;
-};
+import { useRecoilState } from 'recoil';
+import { useRouter } from 'next/router';
+import currentUserState from '../state/currentUser';
+import { emailAuthentication } from '../service';
+import type { UserRegister } from '../types/Forms';
 
 type RegisterFormProps = {
-  onSuccess: () => void;
+  onSuccess?: () => void;
+  onFailure?: (e: Error) => void;
+  successRedirect?: string;
 };
 
-export default function RegisterForm({
+function RegisterForm({
   onSuccess,
+  onFailure,
+  successRedirect,
 }: RegisterFormProps) {
-  const { register, handleSubmit, watch, formState: { errors } } = useForm<RegisterData>();
-  const onSubmit = async data => {
-    await registerUser(data);
-    onSuccess && onSuccess();
-  };
+  const router = useRouter();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<UserRegister>();
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState);
   const currentPassword = watch('password');
+
+  const onSubmit = async (data: UserRegister) => {
+    try {
+      const newUser = await emailAuthentication(data);
+      setCurrentUser(newUser);
+      onSuccess && onSuccess();
+    } catch(e) {
+      onFailure(e);
+    }
+  };
+
+  useEffect(() => {
+    currentUser && router.push(successRedirect);
+  }, [currentUser]);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -47,3 +62,10 @@ export default function RegisterForm({
     </form>
   );
 }
+
+RegisterForm.defaultProps = {
+  onFailure: (e) => console.log(e),
+  successRedirect: '/',
+};
+
+export default RegisterForm;

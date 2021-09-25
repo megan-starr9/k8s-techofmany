@@ -1,7 +1,23 @@
-import { parse, serialize } from 'cookie'
+import {
+  parse,
+  serialize,
+  CookieSerializeOptions,
+} from 'cookie';
 import Iron from '@hapi/iron'
+import type {
+  Session,
+  AuthApiRequest,
+  AuthApiMiddleware,
+} from '../types/Request';
 
-function parseCookies(req) {
+type Options = {
+  name: string,
+  secret: string,
+  cookie: CookieSerializeOptions,
+}
+
+
+function parseCookies(req: AuthApiRequest) {
   // For API Routes we don't need to parse the cookies.
   if (req.cookies) return req.cookies
 
@@ -10,7 +26,7 @@ function parseCookies(req) {
   return parse(cookie || '')
 }
 
-async function getLoginSession(token, secret) {
+async function getLoginSession(token: string, secret: string) {
   const session = await Iron.unseal(token, secret, Iron.defaults)
   const expiresAt = session.createdAt + session.maxAge * 1000
 
@@ -22,7 +38,7 @@ async function getLoginSession(token, secret) {
   return session;
 }
 
-async function storeLoginSession(session, secret) {
+async function storeLoginSession(session: Session, secret: string) {
   const createdAt = Date.now();
   const obj = { ...session, createdAt };
   const token = await Iron.seal(obj, secret, Iron.defaults);
@@ -30,11 +46,13 @@ async function storeLoginSession(session, secret) {
   return token;
 }
 
-export default function session({ name, secret, cookie: cookieOpts }) {
+export default function session(
+  { name, secret, cookie: cookieOpts }: Options
+): AuthApiMiddleware {
   return async (req, res, next) => {
-    const cookies = parseCookies(req)
-    const token = cookies[name]
-    let unsealed = {}
+    const cookies = parseCookies(req);
+    const token = cookies[name];
+    let unsealed = {};
 
     if (token) {
       try {
@@ -60,7 +78,6 @@ export default function session({ name, secret, cookie: cookieOpts }) {
       res.setHeader('Set-Cookie', serialize(name, token, cookieOpts))
       oldEnd.apply(this, args)
     }
-
-    next()
+    next();
   }
 }

@@ -1,25 +1,34 @@
 import passportLib from 'passport';
-import { findUser } from '@techofmany/user/db';
-import emailProvider from './provider/email';
+import { findUser } from '@techofmany/user/store';
+import type { User } from '../types/User';
+import {
+  emailLogin,
+  emailRegister,
+} from './methods';
 
+// @todo remove dependency on db?
 // Serialize our user id into the session on login
-passportLib.serializeUser((user, done) => {
+passportLib.serializeUser((user: User, done) => {
   done(null, user.id);
 });
 
 // pull our user from the session on page visit
-passportLib.deserializeUser( async (id, done) => {
-    const user = await findUser({ id });
+passportLib.deserializeUser( async (id: string, done) => {
+    const user = await findUser(id);
     if (!user) {
-      done(null, false, { message: `No user found with id ${id}` });
+      done(null, false);
     }
     done(null, user);
 });
 
-export default function passport(provider: string) {
-  if (provider === 'email') {
-    passportLib.use(emailProvider);
-  }
+export const METHODS = {
+  EMAIL_LOGIN: 'local.login',
+  EMAIL_REGISTER: 'local.register',
+}
 
+passportLib.use(METHODS.EMAIL_LOGIN, emailLogin);
+passportLib.use(METHODS.EMAIL_REGISTER, emailRegister);
+
+export default function passport() {
   return passportLib;
 }
