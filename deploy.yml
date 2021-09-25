@@ -25,6 +25,23 @@ spec:
       containers:
       - name: techofmany
         image: <IMAGE>
+        imagePullPolicy: IfNotPresent
+        env:
+        - name: MONGO_INITDB_ROOT_USERNAME
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: USERNAME
+        - name: MONGO_INITDB_ROOT_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-secrets
+              key: PASSWORD
+        - name: TOKEN_SECRET
+          valueFrom:
+            secretKeyRef:
+              name: session-secrets
+              key: TOKEN
         ports:
         - name: entry
           containerPort: 3001

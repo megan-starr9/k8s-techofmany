@@ -15,21 +15,18 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>()
     }
   });
 
-if (process.env.ENABLE_AUTH) {
-  try {
-    const authApi = require('@techofmany/auth/api');
-    handler.use(authApi.default);
-  } catch(e) {
-    throw new Error("Run 'npm install @techofmany/auth' to enable authentication.");
-  }
+try {
+  const authApi = require('@techofmany/auth/api');
+  handler.use(authApi.default);
+} catch(e) {
+  console.info("Run 'npm install @techofmany/auth' to enable authentication.");
 }
-if (process.env.ENABLE_PROFILES) {
-  try {
-    const userApi = require('@techofmany/user/api');
-    handler.use(userApi.default);
-  } catch(e) {
-    throw new Error("Run 'npm install @techofmany/user' to enable user profiles.");
-  }
+
+try {
+  const userApi = require('@techofmany/user/api');
+  handler.use(userApi.default);
+} catch(e) {
+  console.info("Run 'npm install @techofmany/user' to enable user profiles.");
 }
 
 export default handler;
