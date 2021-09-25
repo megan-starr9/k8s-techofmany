@@ -1,7 +1,6 @@
 version: '2.0'
 services:
   techofmany:
-    env_file: .env.local
     build:
       context: .
     image: ${CONTAINER_REGISTRY}/k8s-techofmany:${VERSION}
