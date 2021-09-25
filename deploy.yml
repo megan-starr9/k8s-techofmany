@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: techofmany
+  name: k8s-techofmany
   labels:
     app: techofmany
     tier: frontend
@@ -24,7 +24,7 @@ spec:
         tier: frontend
     spec:
       containers:
-      - name: techofmany
+      - name: k8s-techofmany
         image: <IMAGE>
         imagePullPolicy: IfNotPresent
         env:
@@ -59,7 +59,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: techofmany
+  name: k8s-techofmany
 spec:
   type: NodePort
   selector:

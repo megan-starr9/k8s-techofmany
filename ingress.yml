@@ -5,7 +5,6 @@ metadata:
   annotations:
     # use the shared ingress-nginx
     kubernetes.io/ingress.class: "nginx"
-    nginx.ingress.kubernetes.io/default-backend: "custom-nginx"
 spec:
   rules:
   - host: techofmany.com
@@ -15,6 +14,6 @@ spec:
         path: /
         backend:
           service:
-            name: techofmany
+            name: k8s-techofmany
             port:
               number: 3001
