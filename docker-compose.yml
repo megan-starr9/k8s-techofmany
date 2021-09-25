@@ -1,6 +1,6 @@
 version: '2.0'
 services:
-  techofmany:
+  k8s-techofmany:
     build:
       context: .
     image: ${CONTAINER_REGISTRY}/k8s-techofmany:${VERSION}
