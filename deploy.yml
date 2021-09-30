@@ -1,13 +1,3 @@
-apiVersion: v1
-metadata:
-  name: env-local
-data:
-  .env: |
-    NEXT_PUBLIC_ROOT_URL=http://techofmany.com
-kind: ConfigMap
-
----
-
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -63,21 +53,8 @@ spec:
             cpu: 100m
           limits:
             cpu: 100m
-        volumeMounts:
-        - name: env-local
-          mountPath: /src/.env.local
-          readOnly: true
-          subPath: .env.local
       imagePullSecrets:
         - name: regcred
-      volumes:
-      - name: env-local
-        configMap:
-          name: env-local
-          defaultMode: 420
-          items:
-          - key: .env
-            path: .env.local
 ---
 
 apiVersion: v1

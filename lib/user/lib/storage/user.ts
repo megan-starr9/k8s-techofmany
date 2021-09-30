@@ -46,6 +46,5 @@ export async function searchUsers(criterion: Filter<UserRaw>, page = null, limit
   const users = (page && limit)
     ? await findPage<UserRaw>(TABLE_NAME, criterion, page, limit)
     : await find<UserRaw>(TABLE_NAME, criterion);
-  console.log(users);
   return users.map(transform);
 }

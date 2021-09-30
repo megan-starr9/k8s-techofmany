@@ -21,14 +21,11 @@ const dbName = process.env.MONGODB_DATABASE;
 export async function connect(): Promise<void> {
   if (client && db) {
     // Cut out early if we are already connected
-    console.log("LEAVING EARLY");
     return;
   }
 
  await new Promise((resolve, reject) => {
-   console.log(`mongodb://${user}:${passwd}@${host}:${port}`);
    MongoClient.connect(`mongodb://${user}:${passwd}@${host}:${port}`, function(err, client) {
-     console.log("CONNECTING");
      if (err) reject(err);
      try {
        client = client;
@@ -43,7 +40,6 @@ export async function connect(): Promise<void> {
 
 export async function disconnect(): Promise<void> {
   if (client) {
-    console.log("DISCONNECTING");
     await client.close();
     client = null;
     db = null;
