@@ -1,4 +1,4 @@
-version: '2.0'
+version: '3.8'
 services:
   k8s-techofmany:
     build:
