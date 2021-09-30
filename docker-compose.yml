@@ -4,8 +4,5 @@ services:
     build:
       context: .
     image: ${CONTAINER_REGISTRY}/k8s-techofmany:${VERSION}
-    environment:
-      MONGODB_URL: "mongodb://k8s-mongodb:27017"
-      MONGODB_DATABASE: techofmany
     ports:
       - 3001:3001
