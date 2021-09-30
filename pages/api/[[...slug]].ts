@@ -2,7 +2,7 @@ import nextConnect from 'next-connect'
 import { NextApiRequest, NextApiResponse } from "next";
 import {
   connect,
-} from '@techofmany/db';
+} from '@techofmany/storage';
 
 const handler = nextConnect<NextApiRequest, NextApiResponse>()
   .use(async (req, res, next) => {
@@ -16,14 +16,14 @@ const handler = nextConnect<NextApiRequest, NextApiResponse>()
   });
 
 try {
-  const authApi = require('@techofmany/auth/api');
+  const authApi = require('@techofmany/auth/lib/api');
   handler.use(authApi.default);
 } catch(e) {
   console.info("Run 'npm install @techofmany/auth' to enable authentication.");
 }
 
 try {
-  const userApi = require('@techofmany/user/api');
+  const userApi = require('@techofmany/user/lib/api');
   handler.use(userApi.default);
 } catch(e) {
   console.info("Run 'npm install @techofmany/user' to enable user profiles.");

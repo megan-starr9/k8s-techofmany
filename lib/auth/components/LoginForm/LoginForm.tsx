@@ -4,9 +4,9 @@ import React, {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
-import { emailAuthentication } from '../service';
-import currentUserState from '../state/currentUser';
-import type { UserLogin } from '../types/Forms';
+import { emailAuthentication } from '../../service';
+import currentUserState from '../../lib/state/currentUser';
+import type { UserLogin } from '../../types/Forms';
 
 type LoginFormProps = {
   onSuccess?: () => void;
@@ -27,7 +27,7 @@ function LoginForm({
     try {
       const user = await emailAuthentication(data);
       setCurrentUser(user);
-      onSuccess && onSuccess();
+      onSuccess();
     } catch(e) {
       onFailure(e);
     }
@@ -53,6 +53,7 @@ function LoginForm({
 }
 
 LoginForm.defaultProps = {
+  onSuccess: () => {},
   onFailure: (e) => console.log(e),
   successRedirect: '/',
 };

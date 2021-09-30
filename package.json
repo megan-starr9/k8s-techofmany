@@ -10,7 +10,8 @@
   },
   "dependencies": {
     "@techofmany/auth": "./lib/auth",
-    "@techofmany/db": "./lib/db",
+    "@techofmany/core": "./lib/core",
+    "@techofmany/storage": "./lib/storage",
     "@techofmany/user": "./lib/user",
     "axios": "^0.21.4",
     "next": "^10.0.0",

@@ -1,7 +1,7 @@
 import { Strategy as LocalStrategy } from 'passport-local';
 import {
   createUser,
-} from '@techofmany/user/store';
+} from '@techofmany/user/lib/storage';
 import {
   generateSalt,
   hashPassword,

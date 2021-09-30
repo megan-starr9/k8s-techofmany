@@ -1,6 +1,6 @@
 import nextConnect from 'next-connect';
-import passport from '../lib/passport';
-import session from '../lib/session';
+import passport from '../passport';
+import session from '../session';
 
 const authLib = passport();
 const TOKEN = process.env.TOKEN_SECRET;

@@ -1,5 +1,5 @@
 import passportLib from 'passport';
-import { findUser } from '@techofmany/user/store';
+import { findUser } from '@techofmany/user/lib/storage';
 import type { User } from '../types/User';
 import {
   emailLogin,

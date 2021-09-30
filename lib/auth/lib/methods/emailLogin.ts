@@ -2,7 +2,7 @@ import { Strategy as LocalStrategy } from 'passport-local';
 import {
   searchUsers,
   getUserCredentials,
-} from '@techofmany/user/store';
+} from '@techofmany/user/lib/storage';
 import type { User } from '../../types/User';
 import { hashPassword } from '../../lib/encrypt';
 

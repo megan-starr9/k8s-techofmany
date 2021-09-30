@@ -1,4 +1,4 @@
-import type { Result } from '@techofmany/db/types';
+import type { Result } from '@techofmany/storage/types';
 
 type UserPublicFields = {
   username: string,

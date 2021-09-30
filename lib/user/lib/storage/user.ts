@@ -3,15 +3,15 @@ import {
   findById,
   find,
   findPage,
-} from '@techofmany/db';
+} from '@techofmany/storage';
 import type {
   Creator,
   Filter,
-} from '@techofmany/db/types';
+} from '@techofmany/storage/types';
 import type {
   UserRaw,
   User,
-} from '../types/User';
+} from '../../types/User';
 
 const TABLE_NAME = 'users';
 

@@ -1,5 +1,5 @@
 import axios from 'axios';
-import PATHS from './api/paths';
+import PATHS from '../lib/api/paths';
 
 /**
  * Get all users

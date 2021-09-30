@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useRecoilState } from 'recoil';
 import currentUserState, {
   UserState,
-} from '../state/currentUser';
+} from '../lib/state/currentUser';
 import { getSessionUser } from '../service';
 
 /**

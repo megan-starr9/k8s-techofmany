@@ -1,14 +1,14 @@
 import React from 'react';
 import { useSetRecoilState } from 'recoil';
-import currentUserState from '../state/currentUser';
-import { logoutUser } from '../service';
+import currentUserState from '../../lib/state/currentUser';
+import { logoutUser } from '../../service';
 
 type LogoutLinkProps = {
   onSuccess?: () => void;
   onFailure?: (e: Error) => void;
 };
 
-export default function LogoutLink({
+function LogoutLink({
   onSuccess,
   onFailure,
 }: LogoutLinkProps) {
@@ -18,7 +18,7 @@ export default function LogoutLink({
     try {
       await logoutUser();
       setCurrentUser(null);
-      onSuccess && onSuccess();
+      onSuccess();
     } catch(e) {
       onFailure(e);
     }
@@ -30,3 +30,10 @@ export default function LogoutLink({
     </button>
   );
 }
+
+LogoutLink.defaultProps = {
+  onSuccess: () => {},
+  onFailure: (e) => console.log(e),
+};
+
+export default LogoutLink;

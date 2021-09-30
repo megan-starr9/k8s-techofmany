@@ -1,9 +1,9 @@
 import axios from 'axios';
-import PATHS from './api/paths';
+import PATHS from '../lib/api/paths';
 import type {
   UserRegister,
   UserLogin,
-} from './types/Forms';
+} from '../types/Forms';
 
 /**
  * Get current session user

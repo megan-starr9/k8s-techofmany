@@ -1,7 +1,7 @@
 import {
   atom
 } from 'recoil';
-import type { User } from '../types/User';
+import type { User } from '../../types/User';
 
 export type UserState = User | null;
 

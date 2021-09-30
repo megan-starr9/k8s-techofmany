@@ -4,9 +4,9 @@ import React, {
 import { useForm } from 'react-hook-form';
 import { useRecoilState } from 'recoil';
 import { useRouter } from 'next/router';
-import currentUserState from '../state/currentUser';
-import { emailAuthentication } from '../service';
-import type { UserRegister } from '../types/Forms';
+import currentUserState from '../../lib/state/currentUser';
+import { emailAuthentication } from '../../service';
+import type { UserRegister } from '../../types/Forms';
 
 type RegisterFormProps = {
   onSuccess?: () => void;
@@ -28,7 +28,7 @@ function RegisterForm({
     try {
       const newUser = await emailAuthentication(data);
       setCurrentUser(newUser);
-      onSuccess && onSuccess();
+      onSuccess();
     } catch(e) {
       onFailure(e);
     }
@@ -64,6 +64,7 @@ function RegisterForm({
 }
 
 RegisterForm.defaultProps = {
+  onSuccess: () => {},
   onFailure: (e) => console.log(e),
   successRedirect: '/',
 };

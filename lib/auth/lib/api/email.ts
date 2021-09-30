@@ -1,7 +1,7 @@
-import type { AuthApiMiddleware } from '../types/Request';
+import type { AuthApiMiddleware } from '../../types/Request';
 import passport, {
   METHODS,
-} from '../lib/passport'
+} from '../passport'
 
 const authLib = passport();
 

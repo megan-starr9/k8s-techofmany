@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { findUser } from '../store';
+import { findUser } from '../storage';
 
 const getUser: NextApiHandler = async (req, res) => {
   const { slug } = req.query;

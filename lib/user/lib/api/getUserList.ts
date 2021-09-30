@@ -1,5 +1,5 @@
 import { NextApiHandler } from 'next';
-import { searchUsers } from '../store';
+import { searchUsers } from '../storage';
 
 const getUserList: NextApiHandler = async (req, res) => {
   const users = await searchUsers({}, req.query.page, req.query.limit);

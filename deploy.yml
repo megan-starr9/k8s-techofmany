@@ -1,3 +1,14 @@
+apiVersion: v1
+name: env-local
+data:
+  .env: |-
+    MONGODB_URL=mongodb://k8s-mongodb:27017
+    MONGODB_DATABASE=techofmany
+    NEXT_PUBLIC_ROOT_URL=http://techofmany.com
+kind: ConfigMap
+
+---
+
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -28,6 +39,8 @@ spec:
         image: <IMAGE>
         imagePullPolicy: IfNotPresent
         env:
+        - name: ROOT_URL
+          value: "http://techofmany.com"
         - name: MONGO_INITDB_ROOT_USERNAME
           valueFrom:
             secretKeyRef:
@@ -51,9 +64,21 @@ spec:
             cpu: 100m
           limits:
             cpu: 100m
+        volumeMounts:
+        - mountPath: /src/.env.local
+          name: env-local
+          readOnly: true
+          subPath: .env.local
       imagePullSecrets:
         - name: regcred
-
+      volumes:
+      - configMap:
+          defaultMode: 420
+          items:
+          - key: .env
+            path: .env.local
+          name: env-local
+        name: env-local
 ---
 
 apiVersion: v1
