@@ -7,7 +7,8 @@ RUN npm run build
 
 FROM node:12 as serve
 
-ENV MONGODB_URL="mongodb://k8s-mongodb:27017"
+ENV MONGODB_HOST="k8s-mongodb"
+ENV MONGODB_PORT=27017
 ENV MONGODB_DATABASE=techofmany
 
 WORKDIR /src

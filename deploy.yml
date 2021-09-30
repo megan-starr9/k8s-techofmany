@@ -40,12 +40,12 @@ spec:
         env:
         - name: ROOT_URL
           value: "http://techofmany.com"
-        - name: MONGO_INITDB_ROOT_USERNAME
+        - name: MONGODB_USERNAME
           valueFrom:
             secretKeyRef:
               name: mongodb-secrets
               key: USERNAME
-        - name: MONGO_INITDB_ROOT_PASSWORD
+        - name: MONGODB_PASSWORD
           valueFrom:
             secretKeyRef:
               name: mongodb-secrets

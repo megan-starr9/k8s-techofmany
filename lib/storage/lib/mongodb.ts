@@ -12,7 +12,10 @@ import type {
 let client: MongoClient;
 let db: Db;
 
-const connection = process.env.MONGODB_URL;
+const user = process.env.MONGODB_USERNAME;
+const passwd = process.env.MONGODB_PASSWORD;
+const host = process.env.MONGODB_HOST;
+const port = process.env.MONGODB_PORT;
 const dbName = process.env.MONGODB_DATABASE;
 
 export async function connect(): Promise<void> {
@@ -23,7 +26,8 @@ export async function connect(): Promise<void> {
   }
 
  await new Promise((resolve, reject) => {
-   MongoClient.connect(connection, function(err, client) {
+   console.log(`mongodb://${user}:${passwd}@${host}:${port}`);
+   MongoClient.connect(`mongodb://${user}:${passwd}@${host}:${port}`, function(err, client) {
      console.log("CONNECTING");
      if (err) reject(err);
      try {
