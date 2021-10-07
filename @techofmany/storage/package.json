@@ -1,5 +1,5 @@
 {
-  "name": "@techofmany/db",
+  "name": "@techofmany/storage",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",

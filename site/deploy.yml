@@ -26,6 +26,7 @@ spec:
       containers:
       - name: k8s-techofmany
         image: <IMAGE>
+        command: ["npm", "run", "start", "-w", "site"]
         imagePullPolicy: IfNotPresent
         env:
         - name: ROOT_URL
