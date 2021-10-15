@@ -31,7 +31,8 @@ jobs:
         docker image push ${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}
     - name: Update k8s configuration
       run: |
-        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/deploy.yml
+        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/admin/deploy.yml
+        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/site/deploy.yml
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
