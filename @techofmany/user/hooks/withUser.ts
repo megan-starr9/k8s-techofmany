@@ -2,8 +2,9 @@ import {
   useEffect,
   useState,
 } from 'react';
+import type { User } from '@techofmany/storage/types/User';
 import { getUser } from '../service';
-import type { User } from '../types/User';
+
 
 /**
  * Access the current session user within the client

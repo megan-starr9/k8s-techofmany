@@ -1,3 +1,3 @@
-import type { User as UserRecord } from '@techofmany/user/types/User';
+import type { User as UserRecord } from '@techofmany/storage/types/User';
 
 export type User = UserRecord;

@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { findLibrary } from '@techofmany/media/service/library';
-import type { Library } from '@techofmany/media/types/Library';
+import type { Library } from '@techofmany/storage/types/Library';
 
 type MediaPageProps = {
   library: Library,

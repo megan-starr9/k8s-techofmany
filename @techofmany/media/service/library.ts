@@ -1,4 +1,4 @@
-import type { Library } from '../types/Library';
+import type { Library } from '@techofmany/storage/types/Library';
 
 export function findLibrary(slug: string): Promise<Library> {
   return Promise.resolve({

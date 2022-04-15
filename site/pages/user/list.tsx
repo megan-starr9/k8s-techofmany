@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link';
 import { getUserList } from '@techofmany/user/service';
-import type { User } from '@techofmany/user/types/User';
+import type { User } from '@techofmany/storage/types/User';
 
 type UserListPageProps = {
   users: Array<User>,

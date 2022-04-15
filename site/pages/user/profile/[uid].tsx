@@ -1,6 +1,6 @@
 import Head from 'next/head'
 import { getUser } from '@techofmany/user/service';
-import type { User } from '@techofmany/user/types/User';
+import type { User } from '@techofmany/storage/types/User';
 
 type ProfileProps = {
   user: User;

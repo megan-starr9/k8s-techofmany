@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "build": "ts-node --transpile-only schema.ts",
-    "start": "ts-node --transpile-only server.ts"
+    "build2": "ts-node --transpile-only schema.ts",
+    "start2": "ts-node --transpile-only server.ts"
   },
   "author": "",
   "license": "ISC",
