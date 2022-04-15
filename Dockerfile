@@ -9,14 +9,13 @@ WORKDIR $PROJECT_PATH
 FROM base as dependencies
 COPY ./admin/package.json $PROJECT_PATH/admin/package.json
 COPY ./site/package.json $PROJECT_PATH/site/package.json
-COPY ./@techofmany/package.json $PROJECT_PATH/@techofmany/package.json
+COPY ./@techofmany $PROJECT_PATH/@techofmany
 COPY ./package.json $PROJECT_PATH/package.json
 RUN npm install
 
 FROM dependencies as build
 COPY ./admin $PROJECT_PATH/admin
 COPY ./site $PROJECT_PATH/site
-COPY ./@techofmany $PROJECT_PATH/@techofmany
 RUN npm run build --workspaces
 
 FROM build as final
