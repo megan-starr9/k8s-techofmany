@@ -1,0 +1,9 @@
+public:
+  protocol: http
+  domain: techofmany.com
+  port: 3000
+
+admin:
+  protocol: http
+  domain: admin.techofmany.com
+  port: 4000

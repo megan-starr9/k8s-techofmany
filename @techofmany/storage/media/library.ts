@@ -3,15 +3,15 @@ import {
   findById,
   find,
   findPage,
-} from '@techofmany/storage';
+} from '../';
 import type {
   Creator,
   Filter,
-} from '@techofmany/storage/types';
+} from '../types';
 import type {
   LibraryRaw,
   Library,
-} from '../../types/Library';
+} from '../types/Library';
 
 const TABLE_NAME = 'media_libraries';
 

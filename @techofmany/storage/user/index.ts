@@ -3,15 +3,15 @@ import {
   findById,
   find,
   findPage,
-} from '@techofmany/storage';
+} from '../';
 import type {
   Creator,
   Filter,
-} from '@techofmany/storage/types';
+} from '../types';
 import type {
   UserRaw,
   User,
-} from '../../types/User';
+} from '../types/User';
 
 const TABLE_NAME = 'users';
 
@@ -21,6 +21,8 @@ function transform(user: UserRaw): User {
     id: user._id.toString(),
     username: user.username,
     email: user.email,
+    password: user.password,
+    salt: user.salt,
   };
 }
 
@@ -32,14 +34,6 @@ export async function createUser(data: Creator<UserRaw>) {
 export async function findUser(id: string) {
   const users = await findById<UserRaw>(TABLE_NAME, id);
   return transform(users.shift());
-}
-
-export async function getUserCredentials(id: string) {
-  const users = await findById<UserRaw>(TABLE_NAME, id);
-  return {
-    salt: users[0].salt,
-    password: users[0].password,
-  };
 }
 
 export async function searchUsers(criterion: Filter<UserRaw>, page = null, limit = null) {

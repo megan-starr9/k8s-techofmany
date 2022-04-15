@@ -6,33 +6,34 @@ on:
 
 env:
   CONTAINER_REGISTRY: ghcr.io/megan-starr9
-  K_CLUSTER: megstarr-k8s-cluster
+  K_CLUSTER: k8s-techofmany
+  PROJECT_NAME: techofmany
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+    - uses: actions/checkout@v3
     - name: Set the version in environment
       run: |
         echo "VERSION=$(echo ${GITHUB_REF/refs\/tags\//})" >> $GITHUB_ENV
-    - name: Checkout Repository
-      uses: actions/checkout@v2
-    - name: Build image
-      run: |
-        docker-compose build --no-cache techofmany-base
     - name: Login to GitHub Container Registry
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner }}
         password: ${{ secrets.PACKAGE_REG_TOKEN }}
-    - name: Push image
-      run: |
-        docker image push ${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}
-    - name: Update k8s configuration
-      run: |
-        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/admin/deploy.yml
-        sed -i 's|<IMAGE>|${{ env.CONTAINER_REGISTRY }}/k8s-techofmany:${{ env.VERSION }}|' $GITHUB_WORKSPACE/site/deploy.yml
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v1
+    - name: Build and push
+      uses: docker/build-push-action@v2
+      env:
+        ECR_REGISTRY: ${{ env.CONTAINER_REGISTRY }}
+      with:
+        push: true
+        tags: ${{ env.CONTAINER_REGISTRY }}/${{ env.PROJECT_NAME }}:${{ env.VERSION }}
+        cache-from: type=gha
+        cache-to: type=gha,mode=max
     - name: Install doctl
       uses: digitalocean/action-doctl@v2
       with:
@@ -40,8 +41,5 @@ jobs:
     - name: Deploy cluster
       run: |
         doctl kubernetes cluster kubeconfig save ${{ env.K_CLUSTER }}
-        kubectl apply -f $GITHUB_WORKSPACE/admin/deploy.yml
-        kubectl apply -f $GITHUB_WORKSPACE/site/deploy.yml
-        kubectl apply -f $GITHUB_WORKSPACE/ingress.yml
-    - name: Verify
-      run: kubectl rollout status deployment/k8s-techofmany --timeout=90s
+        helm repo add deploy https://raw.githubusercontent.com/megan-starr9/TechOfMany/main/deploy/
+        helm upgrade --install --wait --timeout 90s --set image.repository=${{ env.CONTAINER_REGISTRY }} --set image.version=${{ env.VERSION }} -f ./project.yaml ${{ env.PROJECT_NAME }} deploy/full

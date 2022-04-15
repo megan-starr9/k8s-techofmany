@@ -25,6 +25,7 @@ export async function connect(): Promise<void> {
   }
 
  await new Promise((resolve, reject) => {
+   console.log(`mongodb://${user}:${passwd}@${host}:${port}`);
    MongoClient.connect(`mongodb://${user}:${passwd}@${host}:${port}`, function(err, client) {
      if (err) reject(err);
      try {

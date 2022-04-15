@@ -1,0 +1,23 @@
+{
+  "name": "@techofmany/api",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "build": "ts-node --transpile-only schema.ts",
+    "start": "ts-node --transpile-only server.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.6.3",
+    "graphql": "^15.8.0",
+    "nexus": "^1.2.0"
+  },
+  "devDependencies": {
+    "ts-node-dev": "^1.1.8",
+    "ts-node": "^10.5.0"
+  },
+  "peerDependencies": {
+    "@techofmany/storage": "^1.0.0",
+  }
+}
