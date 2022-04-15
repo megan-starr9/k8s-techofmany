@@ -42,4 +42,4 @@ jobs:
       run: |
         doctl kubernetes cluster kubeconfig save ${{ env.K_CLUSTER }}
         helm repo add deploy https://raw.githubusercontent.com/megan-starr9/TechOfMany/main/deploy/
-        helm upgrade --install --wait --timeout 90s --set image.repository=${{ env.CONTAINER_REGISTRY }} --set image.version=${{ env.VERSION }} -f ./project.yaml ${{ env.PROJECT_NAME }} deploy/full
+        helm upgrade --install --wait --timeout 90s --set image.repository=${{ env.CONTAINER_REGISTRY }} --set image.version=${{ env.VERSION }} --set projectName=${{ env.PROJECT_NAME }} -f ./project.yaml techofmany deploy/full
