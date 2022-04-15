@@ -16,7 +16,7 @@ RUN npm install
 FROM dependencies as build
 COPY ./admin $PROJECT_PATH/admin
 COPY ./site $PROJECT_PATH/site
-RUN npm run build --workspaces
+RUN npm run build --workspaces --if-present
 
 FROM build as final
 CMD [ "ls", "-a" ]
